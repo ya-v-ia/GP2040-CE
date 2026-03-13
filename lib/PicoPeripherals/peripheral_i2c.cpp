@@ -7,7 +7,7 @@ PeripheralI2C::PeripheralI2C() {
 #if PICO_SDK_VERSION_MAJOR >= 2
     _I2C = PICO_DEFAULT_I2C_INSTANCE();
 #else
-    _I2C = PICO_DEFAULT_I2C_INSTANCE;
+    _I2C = i2c0;
 #endif
 
     _SDA = PICO_DEFAULT_I2C_SDA_PIN;
