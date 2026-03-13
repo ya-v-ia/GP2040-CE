@@ -1,0 +1,30 @@
+name: Build Waveshare RP2350-USB-A
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install ARM toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib python3
+
+      - name: Build firmware
+        run: |
+          mkdir build && cd build
+          cmake .. -DGP2040_BOARDCONFIG=WaveshareRP2350USBA -DPICO_BOARD=pico2
+          make -j$(nproc)
+
+      - name: Upload .uf2
+        uses: actions/upload-artifact@v4
+        with:
+          name: GP2040-CE-WaveshareRP2350USBA
+          path: build/*.uf2
